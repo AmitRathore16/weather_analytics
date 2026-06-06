@@ -280,12 +280,7 @@ function App() {
           >
             Dashboard
           </button>
-          <button
-            className={`nav-btn ${activeTab === "queries" ? "active" : ""}`}
-            onClick={() => setActiveTab("queries")}
-          >
-            Queries
-          </button>
+
         </nav>
 
         <div className="navbar-actions">
@@ -398,12 +393,7 @@ function App() {
               </button>
             )}
           </div>
-        ) : (
-          <div className="placeholder-pane">
-            <h2>Queries Page</h2>
-            <p>This section is currently under development. You will be able to perform custom query analysis here in the future.</p>
-          </div>
-        )}
+        ) : null}
       </main>
 
       {showDbModal && (
