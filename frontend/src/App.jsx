@@ -211,7 +211,7 @@ function App() {
         ...prev,
         {
           sender: "assistant",
-          text: "Could not connect to the backend server. Make sure the Node server is running on http://localhost:5001.",
+          text: "Could not connect to the backend server. Please try again later.",
           sqlQuery: null,
         },
       ]);
