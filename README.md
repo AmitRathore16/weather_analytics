@@ -50,7 +50,7 @@ The project was designed to deliver:
 
 ## Database
 
-* MySQL
+* MySQL (Hosted on **Aiven Cloud**)
 
 ## Backend
 
@@ -73,6 +73,14 @@ The project was designed to deliver:
 * CSS
 * JavaScript
 
+## Deployment
+
+* Vercel (Web Application)
+
+## Automation
+
+* GitHub Actions (Scheduled Database Refresh)
+
 ## Version Control
 
 * Git
@@ -89,13 +97,45 @@ The platform follows a fully automated weather analytics workflow.
 1. Python fetches weather data from OpenWeather API.
 2. Current weather information is transformed into structured datasets.
 3. Python automatically creates MySQL tables.
-4. Weather records are inserted into the database.
+4. Weather records are inserted into the Aiven-hosted MySQL database.
 5. JavaScript backend serves weather data to the website.
 6. Power BI connects directly to OpenWeather API endpoints.
 7. Dashboard refresh loads the latest weather information.
 8. AI assistant interacts with weather datasets.
 9. User questions are converted into SQL queries.
 10. Results are returned as insights, forecasts, and weather analysis.
+
+---
+
+# ☁️ Cloud Database — Aiven
+
+The MySQL database is hosted on Aiven, a fully managed open-source cloud database platform. This enables:
+
+* Secure remote connectivity from the web app, Power BI, Python pipeline, and GitHub Actions
+* High availability with automated backups
+* Easy scalability as more cities and metrics are added
+* SSL-encrypted connections for data security
+
+---
+
+# ⏰ Automated Database Refresh — GitHub Actions
+
+The data refresh pipeline is **fully automated using GitHub Actions**, ensuring weather data stays current without any manual intervention.
+
+### How It Works
+
+* A scheduled GitHub Actions workflow runs at defined intervals (e.g., every few hours).
+* The workflow triggers the Python data pipeline automatically.
+* Python fetches the latest weather data from the OpenWeather API.
+* Fresh records are inserted into the Aiven-hosted MySQL database.
+* Power BI dashboards and the web app reflect the updated data on the next load.
+
+### Benefits
+
+* Zero manual intervention required
+* Always up-to-date weather and air quality data
+* Reliable scheduling with full execution logs
+* Runs entirely in the cloud — no local machine needed
 
 ---
 
@@ -244,7 +284,7 @@ The platform supports weather intelligence and environmental analysis.
 
 The platform includes a conversational AI assistant powered by Groq LLM.
 
-Users can ask questions in natural language and receive responses generated from weather datasets.
+Users can ask questions in natural language and receive responses generated from weather datasets stored in the Aiven-hosted MySQL database.
 
 ### Example Questions
 
@@ -416,7 +456,7 @@ GROUP BY weather_condition;
 
 # ⚡ Power BI Integration
 
-Power BI is connected directly to OpenWeather API sources.
+Power BI is connected directly to OpenWeather API sources and the Aiven-hosted MySQL database.
 
 When dashboard refresh is triggered:
 
@@ -435,11 +475,13 @@ An interactive web application was built on top of the analytics platform, bring
 
 ## 🖥️ Website
 
-The web app displays live weather data, forecasts, and air quality metrics for all tracked cities — powered by a Node.js/Express backend connected to the MySQL database and OpenWeather API.
+The web app displays live weather data, forecasts, and air quality metrics for all tracked cities — powered by a Node.js/Express backend connected to the Aiven-hosted MySQL database and OpenWeather API.
+
+🔗 **Live Demo: [View on Vercel](https://your-project.vercel.app)**
 
 ## 🤖 Groq LLM Chatbot
 
-Users can type any weather-related question in plain English. The Groq LLM converts it to SQL, executes it on the database, and returns the result along with the query used.
+Users can type any weather-related question in plain English. The Groq LLM converts it to SQL, executes it on the Aiven database, and returns the result along with the query used.
 
 ## 🎥 Demo Video
 
@@ -449,13 +491,14 @@ Watch the full platform walkthrough including the web dashboard and AI assistant
 
 > 🔗 **Loom Link:** [https://www.loom.com/share/your-video-id-here](https://www.loom.com/share/your-video-id-here)
 
---- 
+---
 
 # ⭐ Project Highlights
 
 * OpenWeather API Integration
 * Automated Python Data Pipeline
-* MySQL Weather Data Warehouse
+* MySQL Weather Data Warehouse on Aiven Cloud
+* Scheduled Database Refresh via GitHub Actions
 * Advanced SQL Analytics
 * Interactive Power BI Dashboard
 * Air Quality Monitoring
@@ -464,4 +507,7 @@ Watch the full platform walkthrough including the web dashboard and AI assistant
 * AI-Powered Weather Assistant
 * Natural Language to SQL Engine
 * Real-Time Dashboard Refresh
+* Live Web Application Deployed on Vercel
 * Weather Forensics Platform
+
+---
