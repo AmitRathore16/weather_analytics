@@ -135,7 +135,7 @@ function cleanSQL(sqlText) {
 }
 
 // Endpoint: Chatbot
-app.post("/api/chat", async (req, res) => {
+app.post("/chat", async (req, res) => {
   const { message, history } = req.body;
   if (!message) {
     return res.status(400).json({ error: "Message is required" });
@@ -176,18 +176,18 @@ Decision:`;
     console.log(`[Chatbot] Routing user question: "${message}"`);
 
     const sqlResponse = await ai.chat.completions.create({
-  model: "llama-3.3-70b-versatile",
-  messages: [
-    {
-      role: "user",
-      content: textToSqlPrompt,
-    },
-  ],
-  temperature: 0,
-});
+      model: "llama-3.3-70b-versatile",
+      messages: [
+        {
+          role: "user",
+          content: textToSqlPrompt,
+        },
+      ],
+      temperature: 0,
+    });
 
-const responseText =
-  sqlResponse.choices?.[0]?.message?.content?.trim() || "";
+    const responseText =
+      sqlResponse.choices?.[0]?.message?.content?.trim() || "";
     console.log(`[Chatbot] Router response: "${responseText}"`);
 
     if (responseText.toUpperCase().startsWith("QUERY:")) {
@@ -238,18 +238,18 @@ Answer:`;
 
       try {
         const answerResponse = await ai.chat.completions.create({
-  model: "llama-3.3-70b-versatile",
-  messages: [
-    {
-      role: "user",
-      content: answerPrompt,
-    },
-  ],
-  temperature: 0,
-});
+          model: "llama-3.3-70b-versatile",
+          messages: [
+            {
+              role: "user",
+              content: answerPrompt,
+            },
+          ],
+          temperature: 0,
+        });
 
-answerText =
-  answerResponse.choices?.[0]?.message?.content?.trim() || "";
+        answerText =
+          answerResponse.choices?.[0]?.message?.content?.trim() || "";
       } catch (err) {
         console.error("Gemini answer generation failed:", err);
         answerText =
