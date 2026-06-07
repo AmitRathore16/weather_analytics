@@ -1,10 +1,10 @@
 -- Create weather_report database if it does not exist
-CREATE DATABASE IF NOT EXISTS weather_report;
-USE weather_report;
+CREATE DATABASE IF NOT EXISTS weather_db;
+USE weather_db;
 
 -- 1. Table for Current Weather (Location + Current)
 CREATE TABLE IF NOT EXISTS current_weather (
-    location_name VARCHAR(255),
+    location_name VARCHAR(255) PRIMARY KEY,
     location_region VARCHAR(255),
     location_country VARCHAR(255),
     location_lat DECIMAL(9, 6),
@@ -110,7 +110,8 @@ CREATE TABLE IF NOT EXISTS forecast_day (
     day_aqi_pm2_5 DECIMAL(12, 6),
     day_aqi_pm10 DECIMAL(12, 6),
     day_aqi_us_epa_index INT,
-    day_aqi_gb_defra_index INT
+    day_aqi_gb_defra_index INT,
+    PRIMARY KEY (location_name, forecast_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 3. Table for Forecast Hour (Location + Forecast Hour)
@@ -170,7 +171,8 @@ CREATE TABLE IF NOT EXISTS forecast_hour (
     hour_aqi_pm2_5 DECIMAL(12, 6),
     hour_aqi_pm10 DECIMAL(12, 6),
     hour_aqi_us_epa_index INT,
-    hour_aqi_gb_defra_index INT
+    hour_aqi_gb_defra_index INT,
+    PRIMARY KEY (location_name, hour_time)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 4. Table for Master Report (All combined fields)
@@ -324,5 +326,6 @@ CREATE TABLE IF NOT EXISTS master_report (
     hour_aqi_pm2_5 DECIMAL(12, 6),
     hour_aqi_pm10 DECIMAL(12, 6),
     hour_aqi_us_epa_index INT,
-    hour_aqi_gb_defra_index INT
+    hour_aqi_gb_defra_index INT,
+    PRIMARY KEY (location_name, forecast_date, hour_time)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -28,6 +28,9 @@ def run_sql_schema(conn):
     with open(schema_path, 'r', encoding='utf-8') as f:
         schema_sql = f.read()
 
+    # Dynamically inject the database name from .env
+    schema_sql = schema_sql.replace('weather_db', DB_NAME).replace('weather_report', DB_NAME)
+
     # Clean single-line comments and empty lines first
     cleaned_lines = []
     for line in schema_sql.splitlines():
@@ -62,6 +65,7 @@ def load_csv_to_table(conn, table_name, csv_path):
         raise FileNotFoundError(f"CSV file not found at {csv_path}")
 
     df = pd.read_csv(csv_path)
+    df = df.drop_duplicates()
     
     # Convert all NaN/NaT/Null to None so pymysql inserts them as SQL NULL
     df = df.where(pd.notnull(df), None)
@@ -72,7 +76,7 @@ def load_csv_to_table(conn, table_name, csv_path):
     col_str = ", ".join(escaped_cols)
     placeholders = ", ".join(["%s"] * len(columns))
     
-    insert_query = f"INSERT INTO {table_name} ({col_str}) VALUES ({placeholders})"
+    insert_query = f"INSERT IGNORE INTO {table_name} ({col_str}) VALUES ({placeholders})"
     
     cursor = conn.cursor()
     # Convert rows to tuple list, converting all NaN/NaT/Null to None for MySQL compatibility
@@ -124,10 +128,10 @@ def setup_and_load_database():
 
         conn.select_db(DB_NAME)
         with conn.cursor() as cursor:
-            cursor.execute("TRUNCATE TABLE current_weather")
-            cursor.execute("TRUNCATE TABLE forecast_day")
-            cursor.execute("TRUNCATE TABLE forecast_hour")
             cursor.execute("TRUNCATE TABLE master_report")
+            cursor.execute("TRUNCATE TABLE forecast_hour")
+            cursor.execute("TRUNCATE TABLE forecast_day")
+            cursor.execute("TRUNCATE TABLE current_weather")
         conn.commit()
         # Load CSVs
         load_csv_to_table(conn, "current_weather", CSV_CURRENT)

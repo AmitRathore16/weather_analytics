@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql2/promise");
 const Groq = require("groq-sdk");
-const { spawn } = require("child_process");
+
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
 
@@ -281,58 +281,6 @@ answerText =
   }
 });
 
-function runPipeline() {
-  const scriptPath = path.join(__dirname, "../database/pipeline.py");
-  const dbDir = path.join(__dirname, "../database");
-
-  return new Promise((resolve, reject) => {
-    const child = spawn("python3", ["-u", scriptPath], {
-      cwd: dbDir,
-      env: { ...process.env, PYTHONUNBUFFERED: "1" },
-    });
-
-    let stdout = "";
-    let stderr = "";
-
-    child.stdout.on("data", (chunk) => {
-      const text = chunk.toString();
-      stdout += text;
-      process.stdout.write(`[Pipeline] ${text}`);
-    });
-
-    child.stderr.on("data", (chunk) => {
-      const text = chunk.toString();
-      stderr += text;
-      process.stderr.write(`[Pipeline] ${text}`);
-    });
-
-    child.on("error", (err) => reject(err));
-
-    child.on("close", (code) => {
-      if (code === 0) {
-        console.log("[Refresh Database] Pipeline succeeded.");
-        resolve(stdout);
-      } else {
-        reject(new Error(stderr.trim() || `Pipeline exited with code ${code}`));
-      }
-    });
-  });
-}
-
-// Endpoint: Refresh database (fetch API -> CSV -> SQL -> dedupe)
-app.post("/api/refresh-database", async (req, res) => {
-  try {
-    console.log("[Refresh Database] Running weather data pipeline...");
-    const pipelineOutput = await runPipeline();
-    res.json({ success: true, message: "Database updated successfully.", pipelineOutput });
-  } catch (error) {
-    console.error("[Refresh Database] Error:", error.message);
-    res.status(500).json({
-      success: false,
-      error: error.message || "Failed to update database.",
-    });
-  }
-});
 
 // Start Server
 const server = app.listen(PORT, () => {
@@ -350,3 +298,5 @@ server.on("error", (err) => {
     console.error("Server error:", err);
   }
 });
+
+module.exports = app;

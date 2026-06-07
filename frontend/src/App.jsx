@@ -139,10 +139,6 @@ function App() {
   const [isSending, setIsSending] = useState(false);
   const [showSqlIndex, setShowSqlIndex] = useState({});
 
-  const [showDbModal, setShowDbModal] = useState(false);
-  const [updatingDb, setUpdatingDb] = useState(false);
-  const [dbUpdateResult, setDbUpdateResult] = useState(null);
-
   const chatEndRef = useRef(null);
 
   useEffect(() => {
@@ -181,7 +177,8 @@ function App() {
     const history = messages.slice(1).map((m) => ({ sender: m.sender, text: m.text }));
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/chat`, {
+      const baseUrl = import.meta.env.PROD ? "" : (import.meta.env.VITE_BACKEND_URL || "");
+      const response = await fetch(`${baseUrl}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: text, history }),
@@ -223,41 +220,7 @@ function App() {
     }
   };
 
-  const triggerRefreshDatabase = async () => {
-    setShowDbModal(true);
-    setUpdatingDb(true);
-    setDbUpdateResult(null);
 
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/refresh-database`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        setDbUpdateResult({
-          success: true,
-          message:
-            "Database updated successfully. Refresh your dashboard in Power BI to view the latest analytics.",
-        });
-      } else {
-        setDbUpdateResult({
-          success: false,
-          message: data.error || "Database update failed. Please check the backend.",
-        });
-      }
-    } catch (err) {
-      console.error("Refresh Database Error:", err);
-      setDbUpdateResult({
-        success: false,
-        message: "Could not reach the backend server.",
-      });
-    } finally {
-      setUpdatingDb(false);
-    }
-  };
 
   const suggestionChips = [
     "What is the average temp in ajmer?",
@@ -284,9 +247,6 @@ function App() {
         </nav>
 
         <div className="navbar-actions">
-          <button className="btn-refresh-db" onClick={triggerRefreshDatabase}>
-            Refresh Database
-          </button>
         </div>
       </header>
 
@@ -396,27 +356,7 @@ function App() {
         ) : null}
       </main>
 
-      {showDbModal && (
-        <div className="modal-overlay">
-          <div className="modal-card">
-            {updatingDb ? (
-              <div className="refresh-loading">
-                <div className="spinner"></div>
-                <p>Fetching weather for 14 cities, updating SQL, and removing duplicates. This usually takes 1–2 minutes.</p>
-              </div>
-            ) : (
-              <div className="refresh-done">
-                <p className={dbUpdateResult?.success ? "success-text" : "error-text"}>
-                  {dbUpdateResult?.message}
-                </p>
-                <button className="modal-close-btn" onClick={() => setShowDbModal(false)}>
-                  OK
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }

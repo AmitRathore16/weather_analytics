@@ -117,27 +117,7 @@ body {
   box-shadow: 0 2px 10px rgba(255, 122, 69, 0.35);
 }
 
-.btn-refresh-db {
-  background: var(--accent-gradient);
-  color: #fff;
-  border: none;
-  padding: 10px 24px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(255, 122, 69, 0.3);
-  transition: all 0.25s ease;
-}
 
-.btn-refresh-db:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(255, 122, 69, 0.45);
-}
-
-.btn-refresh-db:active {
-  transform: translateY(0);
-}
 
 /* Main Content Area */
 .main-content {
@@ -531,83 +511,4 @@ body {
   color: var(--text-secondary);
   max-width: 500px;
   line-height: 1.5;
-}
-
-/* Modal Overlay Styling */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(3, 5, 12, 0.85);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 100;
-}
-
-.modal-card {
-  background-color: rgba(12, 16, 32, 0.95);
-  border: 1px solid var(--border-orange);
-  border-radius: 12px;
-  padding: 28px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-}
-
-.refresh-loading {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.refresh-loading p {
-  font-weight: 500;
-}
-
-.spinner {
-  width: 44px;
-  height: 44px;
-  border: 4px solid rgba(255, 122, 69, 0.15);
-  border-top: 4px solid var(--accent-orange);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.success-text {
-  color: var(--accent-green);
-  font-weight: 500;
-  margin-bottom: 18px;
-}
-
-.error-text {
-  color: var(--accent-red);
-  font-weight: 500;
-  margin-bottom: 18px;
-}
-
-.modal-close-btn {
-  background: var(--accent-gradient);
-  color: #fff;
-  border: none;
-  padding: 10px 28px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  box-shadow: 0 4px 12px rgba(255, 122, 69, 0.3);
-  transition: all 0.2s;
-}
-
-.modal-close-btn:hover {
-  box-shadow: 0 6px 16px rgba(255, 122, 69, 0.45);
 }

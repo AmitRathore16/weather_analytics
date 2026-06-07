@@ -2,7 +2,7 @@ import sys
 from fetch_data import fetch_weather_forecast
 from generate_csvs import process_weather_data
 from load_db import setup_and_load_database
-from dedupe_tables import dedupe_all_tables
+
 
 def run_pipeline():
     """
@@ -36,13 +36,9 @@ def run_pipeline():
         print(f"Pipeline failed at Step 3 (Loading MySQL): {e}", file=sys.stderr)
         sys.exit(1)
 
-    # Step 4: Remove duplicate rows (Power BI-style dedupe on all columns)
-    print("\n--- STEP 4: REMOVING DUPLICATE ROWS ---")
-    try:
-        dedupe_all_tables()
-    except Exception as e:
-        print(f"Pipeline failed at Step 4 (Deduplication): {e}", file=sys.stderr)
-        sys.exit(1)
+    # Step 4: Deduplication is no longer needed since primary keys enforce uniqueness
+    print("\n--- STEP 4: DEDUPLICATION SKIPPED (ENFORCED BY PK) ---")
+
 
     print("\n" + "=" * 60)
     print("PIPELINE COMPLETED SUCCESSFULLY!")
